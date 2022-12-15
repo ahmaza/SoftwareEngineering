@@ -4,89 +4,79 @@ const boggle_solver = require('/home/codio/workspace/Boggle_Testing/boggle_solve
  *  matching).
  * @param {string[]} stringArray - String array to be lowercase.
  */
-/*function lowercaseStringArray(stringArray) {
+function lowercaseStringArray(stringArray) {
   for (let i = 0; i < stringArray.length; i++)
     stringArray[i] = stringArray[i].toLowerCase();
-} */
+}
 
-test('find words (2x2)', () => {
-   const grid = [['A', 'B'],
-                ['C', 'D']];
-   const dictionary = ['A','B','AC','ACA','ACB','DE']
-   expect(boggle_solver.findAllSolutions(grid, dictionary)).toStrictEqual(['acb'])
-});
+describe('Boggle Solver tests suite:', () => {
+  describe('Normal input', () => {
+    let grid = [['A', 'B', 'C', 'D'],
+                ['E', 'F', 'G', 'H'],
+                ['I', 'J', 'K', 'L'],
+                ['M', 'N', 'O', 'P']];
+    let dictionary = ['jin','lob'];
+    let expOutcome = ['jin','lob'];
+    let solutions = boggle_solver.findAllSolutions(grid,dictionary);
 
-test('Find Words 4x4 ', () => {
-  const grid = [["O","A","A","N"],
-                ["E","T","A","E"],
-                ["I","H","K","R"],
-                ["I","F","L","V"]];
-  const dictionary = ["PATH","TEA","EAT","RAIN"];
-  expect(boggle_solver.findAllSolutions(grid, dictionary)).toStrictEqual(["eat","path"])
-});
+    // Lowercasing for case-insensitive string array matching.
+    lowercaseStringArray(solutions);
+    lowercaseStringArray(expected);
+    expect(solutions.sort()).toEqual(expected.sort());
+  });
+
+
   
-test('Find Valid Words, () => {
-  const grid = [["C","O","L","G"],
-                ["A","T","E","S"]];
-  const dictionary = ["COLGATES"];
-  expect(boggle_solver.findAllSolutions(grid, dictionary)).toStrictEqual(["colgate"])
+  describe('Problem contraints', () => {
+    // Cases such as Qu
+    test ('Length'), () => {
+      let grid = [['A', 'W', 'V', 'R'],
+                  ['E', 'N', 'P', 'S'],
+                  ['Y', 'Z', 'Qu', 'T'],
+                  ['O', 'N', 'T', 'A']];
+      let dictionary = ['quart', 'quarter'];
+      let expOutcome = ['quart', 'quarter'];
+
+      let solutions = boggle_solver.findAllSolutions(grid,dictionary);
+
+      // Lowercasing for case-insensitive string array matching.
+      lowercaseStringArray(solutions);
+      lowercaseStringArray(expected);
+      expect(solutions.sort()).toEqual(expected.sort());
+  }
 });
 
-test('Find non-adj Words', () => {
-  const grid = [["A","B","C"],
-                ["D","E","F"],
-                ["G","H","I"]];
-  const dictionary = ["AFI", "CDG", "FAB"];
-  expect(boggle_solver.findAllSolutions(grid, dictionary)).toStrictEqual([])
-});
-
-test('Find Diagonal Words', () => {
-  const grid = [["C","B","U","B","B","F","N","Y"],
-                ["D","L","F","B","S","I","H","G"]];
-  const dictionary = ["CLUBBING"];
-  expect(boggle_solver.findAllSolutions(grid, dictionary)).toStrictEqual(["clubbing"])
-});
-
-// edge cases
-test('Edge Case (empty)', () => {
-  const grid = [];
-  const dictionary = [];
-  expect(boggle_solver.findAllSolutions(grid,dictionary)).toStrictEqual([])
-});
-
-test('Edge Case (short words)', () => {
-  const grid = [["A","B"],
-                ["C","D"]];
-  const dictionary = ["AB","AD"];
-  expect(boggle_solver.findAllSolutions(grid,dictionary)).toStrictEqual([])
-});
-
-test('Edge Case (dup letter)', () => {
-  const grid = [["A","B"],
-                ["C","D"]];
-  const dictionary = ["ABBY"];
-  expect(boggle_solver.findAllSolutions(grid,dictionary)).toStrictEqual([])
-});
-
-//Qu/St
-test('Handle Qu', () => {
-  const grid = [['T', 'N', 'Y', 'Z'],
-                ['S', 'E', 'Qu', 'T'],
-                ['G', 'Z', 'R', 'A']];
-  const dictionary = ["AQUA", "QUARTER"];
-  expect(boggle_solver.findAllSolutions(grid, dictionary)).toStrictEqual(['aqua','quarter'])
   
-test('Handle St', () => {
-  const grid = [['T', 'St', 'D', 'R'],
-                ['P', 'N', 'A', 'T'],
-                ['G', 'Z', 'A', 'R']];
-  const dictionary = ["STRAND", "STRAP"];
-  expect(boggle_solver.findAllSolutions(grid, dictionary)).toStrictEqual(['strap','strand'])
+  describe('Input edge cases', () => {
 
-test('Trailing Q', () => {
-  const grid = [['T', 'E', 'R', 'R'],
-                ['E', 'A', 'Qu', 'T'],
-                ['G', 'Z', 'A', 'R']];
-  const dictionary = ["TARQ"];
-  expect(boggle_solver.findAllSolutions(grid, dictionary)).toStrictEqual([])
+    // Example Test using Jess
+    test('Dictionary is empty', () => {
+      // (Edge case) Since there are no possible solutiona, it should return an
+      // empty list.
+      let grid = [['A', 'B', 'C', 'D'],
+                    ['E', 'F', 'G', 'H'],
+                    ['I', 'J', 'K', 'L'],
+                    ['M', 'N', 'O', 'P']];
+      let dictionary = [];
+      let expected = [];
+
+      let solutions = boggle_solver.findAllSolutions(grid, dictionary);
+
+      // Lowercasing for case-insensitive string array matching.
+      lowercaseStringArray(solutions);
+      lowercaseStringArray(expected);
+      expect(solutions.sort()).toEqual(expected.sort());
+    });
+    test('Empty Grid', () => {
+      let grid = [];
+      let dictionary = ["test"];
+      let expOutcome = [];
+
+      let solutions = boggle_solver.findAllSolutions(grid, dictionary);
+      // Lowercasing for case-insensitive string array matching.
+      lowercaseStringArray(solutions);
+      lowercaseStringArray(expected);
+      expect(solutions.sort()).toEqual(expected.sort());
+    })
+  });
 });
